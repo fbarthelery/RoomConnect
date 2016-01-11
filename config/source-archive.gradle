@@ -1,0 +1,49 @@
+task sourceArchive {
+    description "Get the source archive of the project"
+}
+
+sourceArchive << {
+    makeSourceArchive(rootProject.name)
+}
+
+project.build.dependsOn sourceArchive
+
+def makeSourceArchive(String projectName) {
+    def git = new File(".git")
+    def hg = new File(".hg")
+    def tag
+    if (git.exists()) {
+        tag = getGitSha1()
+        println("Building source archive \"${projectName}-src-${tag}.zip\" from git")
+        exec {
+            workingDir project.rootDir
+            commandLine "git", "archive", "--format=zip", "--prefix=${projectName}-src-${tag}/", "-o", "${projectName}-src-${tag}.zip", "HEAD"
+        }
+    } else if (hg.exists()) {
+        tag = getHgSha1()
+        println("Building source archive \"${projectName}-src-${tag}.zip\" from hg")
+        exec {
+            workingDir project.rootDir
+            commandLine "hg", "archive", "-t", "zip", "-r", tag, "${projectName}-src-${tag}.zip"
+        }
+    }
+}
+
+def getGitSha1() {
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine "git", "--no-pager", "log", "-n", "1", "--pretty=tformat:%H"
+        standardOutput stdout
+    }
+    return stdout.toString().trim()
+}
+
+def getHgSha1() {
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine "hg", "id", "-r", "."
+        standardOutput stdout
+    }
+    String idAndTag = stdout.toString().trim()
+    return  idAndTag.split(" ")[0]
+}
