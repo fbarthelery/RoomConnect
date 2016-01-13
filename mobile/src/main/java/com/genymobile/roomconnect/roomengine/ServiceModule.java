@@ -8,7 +8,7 @@ public interface ServiceModule {
 
     List<Channel> listAvailableChannels();
 
-    void joinChannel(Channel room, ChannelJoinListener listener);
+    void joinChannel(Channel channel, ChannelJoinListener listener);
 
     void registerMessageListener(MessageListener listener);
 
