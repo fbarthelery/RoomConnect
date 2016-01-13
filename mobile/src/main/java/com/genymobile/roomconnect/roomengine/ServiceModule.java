@@ -6,9 +6,9 @@ public interface ServiceModule {
 
     void connect(ConnectionListener listener);
 
-    List<Room> listAvailableRooms();
+    List<Channel> listAvailableChannels();
 
-    void joinRoom(Room room, RoomJoinListener listener);
+    void joinChannel(Channel room, ChannelJoinListener listener);
 
     void registerMessageListener(MessageListener listener);
 

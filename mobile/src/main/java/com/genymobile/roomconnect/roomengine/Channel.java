@@ -1,7 +1,7 @@
 package com.genymobile.roomconnect.roomengine;
 
 
-public interface Room {
+public interface Channel {
 
     String getName();
 }
