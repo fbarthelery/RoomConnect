@@ -8,7 +8,7 @@ public interface ServiceModule {
 
     List<Room> listAvailableRooms();
 
-    void joinRoom(Room room, JoinRoomListener listener);
+    void joinRoom(Room room, RoomJoinListener listener);
 
     void registerMessageListener(MessageListener listener);
 

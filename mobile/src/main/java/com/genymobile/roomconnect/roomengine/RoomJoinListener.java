@@ -1,7 +1,7 @@
 package com.genymobile.roomconnect.roomengine;
 
 
-public interface JoinRoomListener {
+public interface RoomJoinListener {
 
     void onRoomJoinSuccessfull();
 
