@@ -25,5 +25,16 @@ public interface SlackService {
     Call<ChannelsListSlackResponse> listChannels(@Field("token") String token, @Field("exclude_archived") int excludeArchived);
 
 
+    @POST("chat.postMessage")
+    @FormUrlEncoded
+    Call<SlackResponse> postMessage(@Field("token") String token, @Field("channel") String channelId,
+                                     @Field("text") String text,
+                                     // these are all optionals pass null if not needed
+                                     @Field("username") String username,
+                                     @Field("as_user") Boolean asUser, @Field("parse") String parseMode,
+                                     @Field("link_names") Boolean linkNames, @Field("unfurl_links") Boolean unfurlLinks,
+                                     @Field("unfurl_media") Boolean unfurlMedia, @Field("icon_url") String iconUrl,
+                                     @Field("icon_emoji") String iconEmoji);
+
 
 }

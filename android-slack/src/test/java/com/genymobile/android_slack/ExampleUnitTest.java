@@ -10,6 +10,8 @@ import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import java.io.IOException;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
@@ -94,4 +96,36 @@ public class ExampleUnitTest {
             System.out.println("name : " + channel.name);
         }
     }
+
+    @Test
+    public void testPostMessage() throws Exception {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(SLACK_API_BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        SlackService service = retrofit.create(SlackService.class);
+        ChannelsListSlackResponse.Channel channel = findChannel(service, "test");
+        Call<SlackResponse> postMessageCall = service.postMessage(TOKEN, channel.id, "Test of an API", "SLACK API ANDROID BOT",
+                null, null, null, null, null, null, ":bug:");
+        Response<SlackResponse> response = postMessageCall.execute();
+        SlackResponse body = response.body();
+        System.out.println("Response is ok : " + body.ok);
+        assertThat(body.ok).isTrue();
+        System.out.println("error is  " + body.error);
+    }
+
+    private ChannelsListSlackResponse.Channel findChannel(SlackService service, String name) throws IOException {
+        Call<ChannelsListSlackResponse> testCall = service.listChannels(TOKEN, 1);
+        Response<ChannelsListSlackResponse> response = testCall.execute();
+        ChannelsListSlackResponse body = response.body();
+        System.out.println("Response is ok : " + body.ok);
+        for (ChannelsListSlackResponse.Channel channel : body.channels) {
+            if (name.equals(channel.name)) {
+                return channel;
+            }
+        }
+        return null;
+    }
+
 }
