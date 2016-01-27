@@ -1,9 +1,17 @@
 package com.genymobile.android_slack;
 
 import com.genymobile.android_slack.impl.ChannelsListSlackResponse;
+import com.genymobile.android_slack.impl.RtmStartSlackResponse;
 import com.genymobile.android_slack.impl.SlackResponse;
 import com.genymobile.android_slack.impl.SlackService;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.ResponseBody;
+import okhttp3.ws.WebSocket;
+import okhttp3.ws.WebSocketCall;
+import okhttp3.ws.WebSocketListener;
+import okio.Buffer;
 import org.junit.Test;
 import retrofit2.Call;
 import retrofit2.GsonConverterFactory;
@@ -113,6 +121,52 @@ public class ExampleUnitTest {
         System.out.println("Response is ok : " + body.ok);
         assertThat(body.ok).isTrue();
         System.out.println("error is  " + body.error);
+    }
+
+    @Test
+    public void testWebSocket() throws Exception {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(SLACK_API_BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        SlackService service = retrofit.create(SlackService.class);
+        Call<RtmStartSlackResponse> rtmStartCall = service.startRtm(TOKEN,null, null, null);
+        Response<RtmStartSlackResponse> response = rtmStartCall.execute();
+        RtmStartSlackResponse body = response.body();
+        System.out.println("Response is ok : " + body.ok);
+        assertThat(body.ok).isTrue();
+        OkHttpClient okHttpClient = new OkHttpClient();
+        Request request = new Request.Builder().url(body.url).build();
+        WebSocketCall webSocketCall = WebSocketCall.create(okHttpClient, request);
+        webSocketCall.enqueue(new WebSocketListener() {
+            @Override
+            public void onOpen(WebSocket webSocket, okhttp3.Response response) {
+                System.out.println("Web socket is open");
+            }
+
+            @Override
+            public void onFailure(IOException e, okhttp3.Response response) {
+                System.out.println("Web socket error " + e);
+            }
+
+            @Override
+            public void onMessage(ResponseBody responseBody) throws IOException {
+                System.out.println("new websocket message: " + responseBody.string());
+                responseBody.close();
+            }
+
+            @Override
+            public void onPong(Buffer buffer) {
+
+            }
+
+            @Override
+            public void onClose(int i, String s) {
+                System.out.println("Web socket is close");
+            }
+        });
+        Thread.sleep(5000);
     }
 
     private ChannelsListSlackResponse.Channel findChannel(SlackService service, String name) throws IOException {

@@ -24,7 +24,6 @@ public interface SlackService {
     @FormUrlEncoded
     Call<ChannelsListSlackResponse> listChannels(@Field("token") String token, @Field("exclude_archived") int excludeArchived);
 
-
     @POST("chat.postMessage")
     @FormUrlEncoded
     Call<SlackResponse> postMessage(@Field("token") String token, @Field("channel") String channelId,
@@ -36,5 +35,11 @@ public interface SlackService {
                                      @Field("unfurl_media") Boolean unfurlMedia, @Field("icon_url") String iconUrl,
                                      @Field("icon_emoji") String iconEmoji);
 
+    @POST("rtm.start")
+    @FormUrlEncoded
+    Call<RtmStartSlackResponse> startRtm(@Field("token") String token,
+                                 @Field("simple_latest") Boolean simpleLatest,
+                                 @Field("no_unreads") Boolean noUnreads,
+                                 @Field("mpim_aware") Boolean mpimAware);
 
 }
