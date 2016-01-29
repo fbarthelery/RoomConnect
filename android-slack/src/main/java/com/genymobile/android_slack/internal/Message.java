@@ -1,4 +1,4 @@
-package com.genymobile.android_slack.impl;
+package com.genymobile.android_slack.internal;
 
 import com.google.gson.annotations.SerializedName;
 

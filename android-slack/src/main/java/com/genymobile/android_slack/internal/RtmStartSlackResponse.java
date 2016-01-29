@@ -1,4 +1,4 @@
-package com.genymobile.android_slack.impl;
+package com.genymobile.android_slack.internal;
 
 /**
  * Response to an rtm.start api call.

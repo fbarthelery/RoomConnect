@@ -1,4 +1,4 @@
-package com.genymobile.android_slack.impl;
+package com.genymobile.android_slack.internal;
 
 /**
  * Created by darisk on 11/01/16.
