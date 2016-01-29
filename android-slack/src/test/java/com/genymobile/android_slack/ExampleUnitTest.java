@@ -39,8 +39,8 @@ public class ExampleUnitTest {
         retrofit = new Retrofit.Builder()
                 .baseUrl(SLACK_API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(new OkHttpClient())
                 .build();
-
     }
 
     @Test
