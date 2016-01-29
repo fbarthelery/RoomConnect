@@ -10,7 +10,7 @@ import retrofit2.http.POST;
 import java.util.Map;
 
 /**
- * Created by darisk on 11/01/16.
+ * Endpoints to Slack Web API.
  */
 public interface SlackService {
     @POST("api.test")

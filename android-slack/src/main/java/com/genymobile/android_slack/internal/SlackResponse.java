@@ -1,7 +1,7 @@
 package com.genymobile.android_slack.internal;
 
 /**
- * Created by darisk on 11/01/16.
+ * Response to a Slack Web API call.
  */
 public class SlackResponse {
 
