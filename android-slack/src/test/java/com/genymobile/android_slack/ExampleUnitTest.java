@@ -12,6 +12,7 @@ import okhttp3.ws.WebSocket;
 import okhttp3.ws.WebSocketCall;
 import okhttp3.ws.WebSocketListener;
 import okio.Buffer;
+import org.junit.Before;
 import org.junit.Test;
 import retrofit2.Call;
 import retrofit2.GsonConverterFactory;
@@ -31,6 +32,16 @@ public class ExampleUnitTest {
     // Token issued when creating a bot user in slack interface
     public static final String TOKEN = "xoxb-18190368645-ij2XqxuaOnXkeDtXKuG9tYpB";
     public static final String SLACK_API_BASE_URL = "https://slack.com/api/";
+    private Retrofit retrofit;
+
+    @Before
+    public void setUp() throws Exception {
+        retrofit = new Retrofit.Builder()
+                .baseUrl(SLACK_API_BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+    }
 
     @Test
     public void addition_isCorrect() throws Exception {
@@ -39,11 +50,6 @@ public class ExampleUnitTest {
 
     @Test
     public void testSimpleConnection() throws Exception {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(SLACK_API_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
         SlackService service = retrofit.create(SlackService.class);
         Call<SlackResponse> testCall = service.test(null);
         Response<SlackResponse> response = testCall.execute();
@@ -54,11 +60,6 @@ public class ExampleUnitTest {
 
     @Test
     public void testInvalidAuth() throws Exception {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(SLACK_API_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
         SlackService service = retrofit.create(SlackService.class);
         Call<SlackResponse> testCall = service.authTest("FAKETOKEN");
         Response<SlackResponse> response = testCall.execute();
@@ -71,11 +72,6 @@ public class ExampleUnitTest {
 
     @Test
     public void testSimpleAuth() throws Exception {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(SLACK_API_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
         SlackService service = retrofit.create(SlackService.class);
         Call<SlackResponse> testCall = service.authTest(TOKEN);
         Response<SlackResponse> response = testCall.execute();
@@ -87,11 +83,6 @@ public class ExampleUnitTest {
 
     @Test
     public void testListChannels() throws Exception {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(SLACK_API_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
         SlackService service = retrofit.create(SlackService.class);
         Call<ChannelsListSlackResponse> testCall = service.listChannels(TOKEN, 1);
         Response<ChannelsListSlackResponse> response = testCall.execute();
@@ -107,11 +98,6 @@ public class ExampleUnitTest {
 
     @Test
     public void testPostMessage() throws Exception {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(SLACK_API_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
         SlackService service = retrofit.create(SlackService.class);
         ChannelsListSlackResponse.Channel channel = findChannel(service, "test");
         Call<SlackResponse> postMessageCall = service.postMessage(TOKEN, channel.id, "Test of an API", "SLACK API ANDROID BOT",
@@ -125,11 +111,6 @@ public class ExampleUnitTest {
 
     @Test
     public void testWebSocket() throws Exception {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(SLACK_API_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
         SlackService service = retrofit.create(SlackService.class);
         Call<RtmStartSlackResponse> rtmStartCall = service.startRtm(TOKEN,null, null, null);
         Response<RtmStartSlackResponse> response = rtmStartCall.execute();
