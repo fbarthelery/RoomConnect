@@ -3,7 +3,7 @@ package com.genymobile.android_slack.impl;
 import java.util.List;
 
 /**
- * Created by darisk on 12/01/16.
+ * Slack response to the channels.list Web api call.
  */
 public class ChannelsListSlackResponse extends SlackResponse {
 

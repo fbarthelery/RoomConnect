@@ -1,5 +1,6 @@
 package com.genymobile.android_slack.impl;
 
+import android.support.annotation.Nullable;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
@@ -28,18 +29,17 @@ public interface SlackService {
     @FormUrlEncoded
     Call<SlackResponse> postMessage(@Field("token") String token, @Field("channel") String channelId,
                                      @Field("text") String text,
-                                     // these are all optionals pass null if not needed
-                                     @Field("username") String username,
-                                     @Field("as_user") Boolean asUser, @Field("parse") String parseMode,
-                                     @Field("link_names") Boolean linkNames, @Field("unfurl_links") Boolean unfurlLinks,
-                                     @Field("unfurl_media") Boolean unfurlMedia, @Field("icon_url") String iconUrl,
-                                     @Field("icon_emoji") String iconEmoji);
+                                     @Nullable @Field("username") String username,
+                                     @Nullable @Field("as_user") Boolean asUser, @Nullable @Field("parse") String parseMode,
+                                     @Nullable @Field("link_names") Boolean linkNames, @Nullable @Field("unfurl_links") Boolean unfurlLinks,
+                                     @Nullable @Field("unfurl_media") Boolean unfurlMedia, @Nullable @Field("icon_url") String iconUrl,
+                                     @Nullable @Field("icon_emoji") String iconEmoji);
 
     @POST("rtm.start")
     @FormUrlEncoded
     Call<RtmStartSlackResponse> startRtm(@Field("token") String token,
-                                 @Field("simple_latest") Boolean simpleLatest,
-                                 @Field("no_unreads") Boolean noUnreads,
-                                 @Field("mpim_aware") Boolean mpimAware);
+                                         @Nullable @Field("simple_latest") Boolean simpleLatest,
+                                         @Nullable @Field("no_unreads") Boolean noUnreads,
+                                         @Nullable @Field("mpim_aware") Boolean mpimAware);
 
 }
