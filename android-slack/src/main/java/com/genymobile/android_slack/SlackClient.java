@@ -1,7 +1,8 @@
 package com.genymobile.android_slack;
 
-import com.genymobile.android_slack.impl.ChannelsListSlackResponse;
-import com.genymobile.android_slack.impl.SlackService;
+import com.genymobile.android_slack.internal.ChannelsListSlackResponse;
+import com.genymobile.android_slack.internal.SlackResponse;
+import com.genymobile.android_slack.internal.SlackService;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -25,13 +26,17 @@ public class SlackClient {
     private SlackService slackService;
 
     public SlackClient(String token) {
-        this.token = token;
+        this(SLACK_API_BASE_URL, token);
+    }
+
+    SlackClient(String baseUrl, String token) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(SLACK_API_BASE_URL)
+                .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(new OkHttpClient())
                 .build();
         slackService = retrofit.create(SlackService.class);
+        this.token = token;
     }
 
     public List<Channel> getChannels(boolean excludeArchived) throws SlackException {
@@ -55,17 +60,24 @@ public class SlackClient {
         return result;
     }
 
-    private <T> T callOrThrowException(Call<T> call) throws SlackException {
+    private <T extends SlackResponse> T callOrThrowException(Call<T> call) throws SlackException {
         Response<T> response = null;
         try {
             response = call.execute();
             if (response.isSuccess()) {
-                return response.body();
+                T body = response.body();
+                if (body.ok) {
+                    return body;
+                } else {
+                    throw new SlackException("Unsuccessfull slack request. \n"
+                            + "error code: " + response.code() + " " + response.message() + "\n"
+                            + "reason:" + body.error);
+                }
             } else {
                 throw new SlackException(
                         "Unsuccessfull slack request. \n"
-                        + "error code: " + response.code() + " " + response.message() + "\n"
-                        + "body: " + response.errorBody().string());
+                                + "error code: " + response.code() + " " + response.message() + "\n"
+                                + "body: " + response.errorBody().string());
             }
         } catch (IOException e) {
             throw new SlackException("Unable to make slack request", e);
