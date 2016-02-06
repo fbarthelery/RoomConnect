@@ -28,7 +28,7 @@ import static org.junit.Assert.assertEquals;
  * To work on unit tests, switch the Test Artifact in the Build Variants view.
  */
 public class ExampleUnitTest {
-    
+
     // Token issued when creating a bot user in slack interface
     public static final String TOKEN = "xoxb-18190368645-ij2XqxuaOnXkeDtXKuG9tYpB";
     public static final String SLACK_API_BASE_URL = "https://slack.com/api/";
@@ -57,7 +57,6 @@ public class ExampleUnitTest {
         assertThat(response.body().ok).isTrue();
     }
 
-
     @Test
     public void testInvalidAuth() throws Exception {
         SlackService service = retrofit.create(SlackService.class);
@@ -68,7 +67,6 @@ public class ExampleUnitTest {
         assertThat(body.ok).isFalse();
         System.out.println("error is  " + body.error);
     }
-
 
     @Test
     public void testSimpleAuth() throws Exception {
@@ -112,7 +110,7 @@ public class ExampleUnitTest {
     @Test
     public void testWebSocket() throws Exception {
         SlackService service = retrofit.create(SlackService.class);
-        Call<RtmStartSlackResponse> rtmStartCall = service.startRtm(TOKEN,null, null, null);
+        Call<RtmStartSlackResponse> rtmStartCall = service.startRtm(TOKEN, null, null, null);
         Response<RtmStartSlackResponse> response = rtmStartCall.execute();
         RtmStartSlackResponse body = response.body();
         System.out.println("Response is ok : " + body.ok);

@@ -28,12 +28,12 @@ public interface SlackService {
     @POST("chat.postMessage")
     @FormUrlEncoded
     Call<SlackResponse> postMessage(@Field("token") String token, @Field("channel") String channelId,
-                                     @Field("text") String text,
-                                     @Nullable @Field("username") String username,
-                                     @Nullable @Field("as_user") Boolean asUser, @Nullable @Field("parse") String parseMode,
-                                     @Nullable @Field("link_names") Boolean linkNames, @Nullable @Field("unfurl_links") Boolean unfurlLinks,
-                                     @Nullable @Field("unfurl_media") Boolean unfurlMedia, @Nullable @Field("icon_url") String iconUrl,
-                                     @Nullable @Field("icon_emoji") String iconEmoji);
+                                    @Field("text") String text,
+                                    @Nullable @Field("username") String username,
+                                    @Nullable @Field("as_user") Boolean asUser, @Nullable @Field("parse") String parseMode,
+                                    @Nullable @Field("link_names") Boolean linkNames, @Nullable @Field("unfurl_links") Boolean unfurlLinks,
+                                    @Nullable @Field("unfurl_media") Boolean unfurlMedia, @Nullable @Field("icon_url") String iconUrl,
+                                    @Nullable @Field("icon_emoji") String iconEmoji);
 
     @POST("rtm.start")
     @FormUrlEncoded
