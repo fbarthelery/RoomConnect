@@ -1,9 +1,9 @@
 package com.genymobile.android_slack;
 
-import com.genymobile.android_slack.impl.ChannelsListSlackResponse;
-import com.genymobile.android_slack.impl.RtmStartSlackResponse;
-import com.genymobile.android_slack.impl.SlackResponse;
-import com.genymobile.android_slack.impl.SlackService;
+import com.genymobile.android_slack.internal.ChannelsListSlackResponse;
+import com.genymobile.android_slack.internal.RtmStartSlackResponse;
+import com.genymobile.android_slack.internal.SlackResponse;
+import com.genymobile.android_slack.internal.SlackService;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -39,8 +39,8 @@ public class ExampleUnitTest {
         retrofit = new Retrofit.Builder()
                 .baseUrl(SLACK_API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(new OkHttpClient())
                 .build();
-
     }
 
     @Test
