@@ -58,6 +58,12 @@ public class EventParserTest {
         eventParser.parseEvent(json);
     }
 
+    @Test(expected = SlackException.class)
+    public void testThatExceptionIsThrownOnEmptyJson() throws Exception {
+        String json = "";
+        eventParser.parseEvent(json);
+    }
+
     private static String readFully(InputStream inputStream) throws IOException {
         return readFully(new InputStreamReader(inputStream));
     }

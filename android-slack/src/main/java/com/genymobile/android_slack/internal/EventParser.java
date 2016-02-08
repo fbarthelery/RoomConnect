@@ -20,6 +20,9 @@ public class EventParser {
     public RtmEvent parseEvent(String jsonEvent) throws SlackException {
         try {
             RtmEvent baseEvent = gson.fromJson(jsonEvent, RtmEvent.class);
+            if (baseEvent == null) {
+                throw new SlackException("Error when parsing slack event for : " + jsonEvent);
+            }
             return specializeEvent(baseEvent, jsonEvent);
         } catch (JsonSyntaxException e) {
             throw new SlackException("Error when parsing slack event", e);
