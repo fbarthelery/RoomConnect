@@ -14,7 +14,13 @@ public class RtmEvent {
         HELLO(HelloEvent.class),
 
         @SerializedName("message")
-        MESSAGE(MessageEvent.class);
+        MESSAGE(MessageEvent.class),
+
+        @SerializedName("presence_change")
+        PRESENCE_CHANGE(PresenceChangeEvent.class),
+
+        @SerializedName("reconnect_url")
+        RECONNECT_URL(ReconnectUrlEvent.class);
 
         private Class<? extends RtmEvent> eventClass;
 

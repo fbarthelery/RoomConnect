@@ -1,0 +1,4 @@
+{
+  "type": "reconnect_url",
+  "url": "wss://some-ws.url.com"
+}

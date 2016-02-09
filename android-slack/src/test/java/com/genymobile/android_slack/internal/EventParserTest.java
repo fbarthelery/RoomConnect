@@ -3,6 +3,8 @@ package com.genymobile.android_slack.internal;
 import com.genymobile.android_slack.SlackException;
 import com.genymobile.android_slack.internal.rtm.HelloEvent;
 import com.genymobile.android_slack.internal.rtm.MessageEvent;
+import com.genymobile.android_slack.internal.rtm.PresenceChangeEvent;
+import com.genymobile.android_slack.internal.rtm.ReconnectUrlEvent;
 import com.genymobile.android_slack.internal.rtm.RtmEvent;
 
 import org.junit.Before;
@@ -43,6 +45,25 @@ public class EventParserTest {
         assertThat(messageEvent.userId).isEqualTo("U2147483697");
         assertThat(messageEvent.text).isEqualTo("Hello, world!");
         assertThat(messageEvent.timestamp).isEqualTo("1355517523.000005");
+    }
+
+    @Test
+    public void testThatPresenceChangeEventIsParsed() throws Exception {
+        InputStream jsonStream = getClass().getResourceAsStream("/events.presence_change.json");
+        String json = readFully(jsonStream);
+        PresenceChangeEvent presenceChangeEvent = (PresenceChangeEvent) eventParser.parseEvent(json);
+        assertThat(presenceChangeEvent.type).isEqualTo(RtmEvent.Type.PRESENCE_CHANGE);
+        assertThat(presenceChangeEvent.userId).isEqualTo("U024BE7LH");
+        assertThat(presenceChangeEvent.presence).isEqualTo("away");
+    }
+
+    @Test
+    public void testThatReconnectUrlEventIsParsed() throws Exception {
+        InputStream jsonStream = getClass().getResourceAsStream("/events.reconnect_url.json");
+        String json = readFully(jsonStream);
+        ReconnectUrlEvent reconnectUrlEvent = (ReconnectUrlEvent) eventParser.parseEvent(json);
+        assertThat(reconnectUrlEvent.type).isEqualTo(RtmEvent.Type.RECONNECT_URL);
+        assertThat(reconnectUrlEvent.url).isEqualTo("wss://some-ws.url.com");
     }
 
     @Test(expected = SlackException.class)
